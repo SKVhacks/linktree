@@ -8,6 +8,7 @@ import {
     FaXTwitter,
     FaReddit,
     FaLinkedin,
+    FaTwitch ,
     FaArrowUpFromBracket,
 } from "react-icons/fa6";
 import { RiTelegram2Fill } from "react-icons/ri";
@@ -163,6 +164,9 @@ const Linktree = () => {
                                 <FaTiktok className="absolute text-[#FE2C55] translate-x-[2px]" />
                                 <FaTiktok className="absolute text-black" />
                             </div>
+                        </a>
+                        <a ref={addToRefs} href="https://www.twitch.tv/gadget_vishwa" className="hover:scale-110 transition">
+                            <FaTwitch className="text-violet-500" />
                         </a>
                         <a ref={addToRefs} href="https://x.com/Gadget_Vishwa" className="hover:scale-110 transition">
                             <FaXTwitter />
