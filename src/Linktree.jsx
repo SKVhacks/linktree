@@ -25,7 +25,6 @@ import { IoMdPlay } from "react-icons/io";
 
 const Linktree = () => {
     const [copied, setCopied] = useState(false);
-    // ... inside your component, above the return:
     const iconsRef = useRef([]);
     iconsRef.current = [];
 
@@ -210,9 +209,8 @@ const Linktree = () => {
                     <div className="space-y-4">
 
 
-                        <div className="flex gap-2">
+                        <div  ref={addToRefs} className="flex gap-2">
                             <a
-
                                 href="https://github.com/SKVhacks"
                                 className="px-2 flex-1 h-16 flex items-center justify-center gap-3 rounded-full bg-black text-white text-xl font-medium transition hover:scale-[1.03] active:scale-95"
                             >
@@ -225,14 +223,14 @@ const Linktree = () => {
                                 className="px-2 flex-1 h-16 flex items-center justify-center rounded-full bg-white transition hover:scale-[1.03] active:scale-95"
                             >
                                 <img
-                                    src="https://ssl.gstatic.com/ui/v1/icons/mail/rfr/logo_gmail_lockup_default_1x_r7.png"
+                                    src="https://media.gadgetvishwa.xyz/images/projects/gmail.png"
                                     alt="Gmail"
                                 />
                             </a>
                         </div>
 
                         {/* Row 2 */}
-                        <div className="flex gap-2">
+                        <div ref={addToRefs} className="flex gap-2">
 
                             <a
                                 href="https://steamcommunity.com/id/gadget_vishwa/"
@@ -251,11 +249,12 @@ const Linktree = () => {
                         </div>
                     </div>
 
-                    <div className="flex gap-1 text-sm">
+                    <div ref={addToRefs} className="flex gap-1 text-sm">
                         <FaRegHeart className="text-xs mt-1 text-red-400" /> <p className="text-gray-400">Favourite</p>
                     </div>
 
                     <a
+                        ref={addToRefs}
                         href="https://music.apple.com/in/album/luz-roja-ep/1855955695"
                         target="_blank"
                         rel="noopener noreferrer"
@@ -280,7 +279,7 @@ const Linktree = () => {
 
                             <div className="mt-2 overflow-hidden rounded-2xl">
                                 <img
-                                    src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTg5sSaGvDCdV70ZLzl-tEqJ7OtUURgnT0zWiWhcbknAQ&s=10"
+                                src="https://media.gadgetvishwa.xyz/images/projects/luz.jpeg"
                                     alt="Album Cover"
                                     className="w-full aspect-square object-cover transition-transform duration-500 group-hover:scale-105"
                                 />
@@ -296,6 +295,7 @@ const Linktree = () => {
                     </a>
                 </div>
                 <a
+                    ref={addToRefs}
                     href="https://www.paypal.com/paypalme/GadgetVishwa"
 
                     className="mt-auto mb-5 shadow-lg hover:scale-105 transition"
