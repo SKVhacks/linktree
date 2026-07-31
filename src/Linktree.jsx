@@ -9,6 +9,7 @@ import {
     FaReddit,
     FaLinkedin,
     FaTwitch ,
+    FaThreads ,
     FaArrowUpFromBracket,
 } from "react-icons/fa6";
 import { RiTelegram2Fill } from "react-icons/ri";
@@ -157,6 +158,9 @@ const Linktree = () => {
                         </a>
                         <a ref={addToRefs} href="https://t.me/Gadget_Vishwa" className="hover:scale-110 transition">
                             <RiTelegram2Fill className="text-blue-500" />
+                        </a>
+                        <a ref={addToRefs} href="https://www.threads.com/@gadget_vishwa" className="hover:scale-110 transition">
+                            <FaThreads  className="text-white" />
                         </a>
                         <a ref={addToRefs} href="https://www.tiktok.com/@gadget_vishwa" className="hover:scale-110 transition">
                             <div className="relative w-6 h-6">
