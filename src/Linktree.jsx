@@ -1,32 +1,26 @@
 import { useState, useRef, useEffect } from "react";
 import gsap from "gsap";
-import {
-    FaFacebook,
-    FaInstagram,
-    FaTiktok,
-    FaSnapchat,
-    FaXTwitter,
-    FaReddit,
-    FaLinkedin,
-    FaTwitch ,
-    FaThreads ,
-    FaArrowUpFromBracket,
-} from "react-icons/fa6";
-import { RiTelegram2Fill } from "react-icons/ri";
-import { FaRegHeart, FaSteam } from "react-icons/fa";
-import { FiGithub } from "react-icons/fi"
-import { SiMedium } from "react-icons/si";
+import { Vibrant } from "node-vibrant/browser";
+
+import { FaArrowUpFromBracket } from "react-icons/fa6";
 import { MdVerified } from "react-icons/md";
-import { DiaTextReveal } from "@/components/ui/dia-text-reveal"
-import { WordRotate } from "@/components/ui/word-rotate"
-import { HiMusicalNote } from "react-icons/hi2";
 import { LuCopyCheck } from "react-icons/lu";
-import { AnimatedList } from "@/components/ui/animated-list"
-import AudioVisualizer from "./components/Audiovisualizer"
-import { IoMdPlay } from "react-icons/io";
+
+import { DiaTextReveal } from "@/components/ui/dia-text-reveal";
+import { WordRotate } from "@/components/ui/word-rotate";
+import { AnimatedList } from "@/components/ui/animated-list";
+
+import { profile } from "./data/Links";
+
+import SocialMedia from "./pages/SocialMedia";
+import QuickLinks from "./pages/QuickLinks";
+import MusicCard from "./pages/MusicCard";
+import FeaturedLink from "./pages/FeaturedLink";
+import SupportLink from "./pages/SupportLink";
 
 const Linktree = () => {
     const [copied, setCopied] = useState(false);
+    const [showBadge, setShowBadge] = useState(false);
     const iconsRef = useRef([]);
     iconsRef.current = [];
 
@@ -35,16 +29,70 @@ const Linktree = () => {
             iconsRef.current.push(el);
         }
     };
-    const [showBadge, setShowBadge] = useState(false);
+
+    const [bgGradient, setBgGradient] = useState([
+        "#1c1d1f",
+        "#3a3d40",
+        "#b2d30",
+    ]);
+
+    const imgRef = useRef(null);
+
+    const darken = (hex, amount = 0.55) => {
+        const rgb = hex.match(/\w\w/g).map((v) => parseInt(v, 16));
+
+        return `rgb(
+        ${Math.floor(rgb[0] * amount)},
+        ${Math.floor(rgb[1] * amount)},
+        ${Math.floor(rgb[2] * amount)}
+    )`;
+    };
+    const extractColors = async () => {
+        try {
+            const palette = await Vibrant.from(profile.image).getPalette();
+
+            console.log(palette);
+
+            const colors = [
+                palette.Vibrant?.hex,
+                palette.DarkVibrant?.hex,
+                palette.Muted?.hex,
+                palette.DarkMuted?.hex,
+                palette.LightMuted?.hex,
+                palette.LightVibrant?.hex,
+            ].filter(Boolean);
+
+            if (!colors.length) return;
+
+            const gradient = colors
+                .slice(0, 4)
+                .map((c) => darken(c));
+
+            while (gradient.length < 4) {
+                gradient.push(gradient[gradient.length - 1]);
+            }
+
+            setBgGradient(gradient);
+        } catch (err) {
+            console.error(err);
+        }
+    };
 
     useEffect(() => {
         const timer = setTimeout(() => setShowBadge(true), 1300);
         return () => clearTimeout(timer);
     }, []);
     useEffect(() => {
+        extractColors();
+    }, []);
+    useEffect(() => {
         gsap.fromTo(
             iconsRef.current,
-            { opacity: 0, y: 20, scale: 0.5 },
+            {
+                opacity: 0,
+                y: 20,
+                scale: 0.5,
+            },
             {
                 opacity: 1,
                 y: 0,
@@ -55,18 +103,32 @@ const Linktree = () => {
             }
         );
     }, []);
+
     const copyUrl = async () => {
         try {
             await navigator.clipboard.writeText(window.location.href);
             setCopied(true);
+
             setTimeout(() => setCopied(false), 2000);
         } catch (err) {
             console.error("Failed to copy:", err);
         }
     };
+
     return (
         <div className="min-h-screen flex justify-center bg-[#121212] text-white font-sans">
-            <div className="relative w-full max-w-lg min-h-screen overflow-hidden flex flex-col items-center bg-gradient-to-b from-[#1c1d1f] via-[#3a3d40] to-[#2b2d30]">
+            <div
+                className="relative w-full max-w-lg min-h-screen overflow-hidden flex flex-col items-center transition-all duration-700"
+                style={{
+                    background: `linear-gradient(
+        210deg,
+       
+         ${bgGradient[profile.color]} 40%,
+          ${bgGradient[profile.color + 1]} 100%
+    )`,
+                }}
+            >
+                {/* Copy Toast */}
                 <div className="absolute top-10 left-1/2 -translate-x-1/2 z-50">
                     <AnimatedList delay={1000}>
                         {copied && (
@@ -77,239 +139,73 @@ const Linktree = () => {
                         )}
                     </AnimatedList>
                 </div>
-                <div className="absolute top-5  right-0 flex justify-between px-5 z-10">
+
+                {/* Share Button */}
+                <div className="absolute top-5 right-0 flex justify-between px-5 z-10">
                     <button
                         onClick={copyUrl}
-                        className="w-[42px] h-[42px] rounded-full bg-white/20 backdrop-blur-md border border-white/20 flex items-center justify-center hover:bg-white/30 transition">
+                        className="w-[42px] h-[42px] rounded-full bg-white/20 backdrop-blur-md border border-white/20 flex items-center justify-center hover:bg-white/30 transition"
+                    >
                         <FaArrowUpFromBracket />
                     </button>
-
                 </div>
-                <div className="w-full flex flex-col items-center text-center">
 
+                <div className="w-full flex flex-col items-center text-center">
+                    {/* Profile Image */}
                     <div className="relative w-full h-[420px] flex justify-center items-end">
                         <img
-                            src="/pic1.png"
-                            alt="Gadget Vishwa"
-                            className="w-full h-full object-cover grayscale contrast-110"
+                            ref={imgRef}
+                            src={profile.image}
+                            alt={profile.name}
+                            crossOrigin="anonymous"
+                            // onLoad={extractColors}
+                            className="w-full h-full object-cover"
                             style={{
                                 WebkitMaskImage:
-                                    "linear-gradient(to bottom, rgba(0,0,0,1) 60%, rgba(0,0,0,0) 100%)",
+                                    "linear-gradient(to bottom, rgba(0,0,0,1) 75%, rgba(0,0,0,0) 100%)",
                                 maskImage:
-                                    "linear-gradient(to bottom, rgba(0,0,0,1) 60%, rgba(0,0,0,0) 100%)",
+                                    "linear-gradient(to bottom, rgba(0,0,0,1) 75%, rgba(0,0,0,0) 100%)",
                             }}
                         />
                     </div>
+
+                    {/* Name */}
                     <div className="-mt-3 flex items-center justify-center gap-2 relative">
                         <h1 className="text-[42px] font-semibold tracking-tight drop-shadow-lg leading-none">
                             <DiaTextReveal
-                                text="Gadget Vishwa"
+                                text={profile.name}
                                 once
                                 textColor="white"
-
                             />
                         </h1>
-                        <MdVerified className={`absolute -top-0.5 -right-5.5 text-[22px] text-blue-600 shrink-0 ${showBadge ? "opacity-100" : "opacity-0"} transition-opacity duration-700`} />
+
+                        <MdVerified
+                            className={`absolute -top-0.5 -right-5.5 text-[22px] text-blue-600 shrink-0 ${showBadge ? "opacity-100" : "opacity-0"
+                                } transition-opacity duration-700`}
+                        />
                     </div>
 
-                    <p className={`text-lg font-normal text-gray-300 ${showBadge ? "opacity-100" : "opacity-0"} transition-opacity duration-100`}>
-
-                        <WordRotate duration={1500} words={["Software Developer", "IOT Engineer", "PCB Designer", "Drone Pilot"]} />
-                    </p>
-
-                    <div className="flex gap-3 mb-8 text-3xl">
-                        <a ref={addToRefs} href="https://www.facebook.com/share/1CqwohZMNL/" className="hover:scale-110 transition bg-blue-500 rounded-full">
-                            <FaFacebook className="text-white" />
-                        </a>
-                        <svg width="0" height="0" className="absolute">
-                            <defs>
-                                <linearGradient id="instagram-gradient" x1="0%" y1="100%" x2="100%" y2="0%">
-                                    <stop offset="0%" stopColor="#FFDD55" />
-                                    <stop offset="25%" stopColor="#FF543E" />
-                                    <stop offset="50%" stopColor="#C837AB" />
-                                    <stop offset="100%" stopColor="#5851DB" />
-                                </linearGradient>
-                            </defs>
-                        </svg>
-
-
-                        <svg width="0" height="0" className="absolute">
-                            <defs>
-                                <linearGradient id="tiktok-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
-                                    <stop offset="0%" stopColor="#25F4EE" />
-                                    <stop offset="50%" stopColor="#000000" />
-                                    <stop offset="100%" stopColor="#FE2C55" />
-                                </linearGradient>
-                            </defs>
-                        </svg>
-
-
-                        <a ref={addToRefs} href="https://www.instagram.com/gadget_vishwa/" className="hover:scale-110 transition">
-                            <FaInstagram className="instagram-gradient" />
-                        </a>
-                        <a ref={addToRefs} href="https://www.linkedin.com/in/s-vishwa/" className="hover:scale-110 transition">
-                            <FaLinkedin className="text-blue-700 " />
-                        </a>
-                        <a ref={addToRefs} href="https://www.reddit.com/user/Gadget_Vishwa/" className="hover:scale-110 transition bg-white rounded-full">
-                            <FaReddit className="text-orange-600" />
-                        </a>
-                        <a ref={addToRefs} href="https://www.snapchat.com/@gadget_vishwa" className="hover:scale-110 transition">
-                            <FaSnapchat className="text-yellow-300" />
-                        </a>
-                        <a ref={addToRefs} href="https://t.me/Gadget_Vishwa" className="hover:scale-110 transition">
-                            <RiTelegram2Fill className="text-blue-500" />
-                        </a>
-                        <a ref={addToRefs} href="https://www.threads.com/@gadget_vishwa" className="hover:scale-110 transition">
-                            <FaThreads  className="text-white" />
-                        </a>
-                        <a ref={addToRefs} href="https://www.tiktok.com/@gadget_vishwa" className="hover:scale-110 transition">
-                            <div className="relative w-6 h-6">
-                                <FaTiktok className="absolute text-[#25F4EE] -translate-x-[2px]" />
-                                <FaTiktok className="absolute text-[#FE2C55] translate-x-[2px]" />
-                                <FaTiktok className="absolute text-black" />
-                            </div>
-                        </a>
-                        <a ref={addToRefs} href="https://www.twitch.tv/gadget_vishwa" className="hover:scale-110 transition">
-                            <FaTwitch className="text-violet-500" />
-                        </a>
-                        <a ref={addToRefs} href="https://x.com/Gadget_Vishwa" className="hover:scale-110 transition">
-                            <FaXTwitter />
-                        </a>
+                    {/* Titles */}
+                    <div
+                        className={`text-lg font-normal text-gray-300 ${showBadge ? "opacity-100" : "opacity-0"
+                            } transition-opacity duration-100`}
+                    >
+                        <WordRotate
+                            duration={1500}
+                            words={profile.titles}
+                        />
                     </div>
 
-                    {/*  */}
+                    <SocialMedia addToRefs={addToRefs} />
                 </div>
 
+                {/* Cards */}
                 <div className="w-full px-5 flex flex-col gap-4 mb-10">
-
-                    <a
-                        ref={addToRefs}
-                        href="https://gadgetvishwa.xyz"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="group block w-full"
-                    >
-                        <div className="p-4 overflow-hidden rounded-3xl border border-white/20 bg-slate-900/90 backdrop-blur-xl  font-bold  transition active:scale-95">
-                            <div className="flex items-center gap-3 mb-2">
-                                <div className="bg-white p-1 rounded-lg text-lime-500 text-xl w-8 text-center h-8">
-                                    V
-                                </div>
-                                <div className="flex-1">
-                                    <h2 className="text-base font-semibold text-white">
-                                        Portfolio
-                                    </h2>
-                                    <p className="text-xs text-zinc-400">
-                                        gadgetvishwa.xyz
-                                    </p>
-                                </div>
-                            </div>
-                            <div className="overflow-hidden rounded-lg">
-                                <img
-                                    src="https://media.gadgetvishwa.xyz/images/projects/share.png"
-                                    alt="Portfolio Preview"
-                                    className="w-full object-cover transition duration-500 group-hover:scale-105"
-                                />
-                            </div>
-                        </div>
-                    </a>
-
-
-                    <div className="space-y-4">
-
-
-                        <div  ref={addToRefs} className="flex gap-2">
-                            <a
-                                href="https://github.com/SKVhacks"
-                                className="px-2 flex-1 h-16 flex items-center justify-center gap-3 rounded-full bg-black text-white text-xl font-medium transition hover:scale-[1.03] active:scale-95"
-                            >
-                                <FiGithub className="text-3xl" />
-                                <span>Github</span>
-                            </a>
-
-                            <a
-                                href="mailto:gadgetvishwa.official@gmail.com"
-                                className="px-2 flex-1 h-16 flex items-center justify-center rounded-full bg-white transition hover:scale-[1.03] active:scale-95"
-                            >
-                                <img
-                                    src="https://media.gadgetvishwa.xyz/images/projects/gmail.png"
-                                    alt="Gmail"
-                                />
-                            </a>
-                        </div>
-
-                        {/* Row 2 */}
-                        <div ref={addToRefs} className="flex gap-2">
-
-                            <a
-                                href="https://steamcommunity.com/id/gadget_vishwa/"
-                                className="px-2 flex-1 h-16 flex items-center justify-center gap-3 rounded-full bg-[#1B4DDB] text-white text-xl font-medium transition hover:scale-[1.03] active:scale-95"
-                            >
-                                <FaSteam className="text-4xl" />
-                                <span>Steam</span>
-                            </a>
-                            <a
-                                href="https://medium.com/@gadget_vishwa"
-                                className="px-2 flex-1 h-16 flex items-center justify-center gap-3 rounded-full bg-black text-white text-xl font-medium transition hover:scale-[1.03] active:scale-95"
-                            >
-                                <SiMedium className="text-3xl" />
-                                <span>Medium</span>
-                            </a>
-                        </div>
-                    </div>
-
-                    <div ref={addToRefs} className="flex gap-1 text-sm">
-                        <FaRegHeart className="text-xs mt-1 text-red-400" /> <p className="text-gray-400">Favourite</p>
-                    </div>
-
-                    <a
-                        ref={addToRefs}
-                        href="https://music.apple.com/in/album/luz-roja-ep/1855955695"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="group block"
-                    >
-
-                        <div className="p-4 bg-gradient-to-br from-pink-300  to-pink-600 rounded-2xl">
-                            {/* Header */}
-                            <div className="flex justify-between">
-                                <div className="flex items-center gap-2">
-                                    <div className="bg-white p-1 rounded-lg">
-                                        <HiMusicalNote size={25} className="text-red-600" />
-                                    </div>
-                                    <span className="text-sm font-medium text-white text-center">
-                                        Apple Music
-                                    </span>
-                                </div>
-                                <div className="flex mr-2 mt-1">
-                                    <AudioVisualizer bars={4} color="#fff" height={25} barWidth={4} gap={3} active={true} />
-                                </div>
-                            </div>
-
-                            <div className="mt-2 overflow-hidden rounded-2xl">
-                                <img
-                                src="https://media.gadgetvishwa.xyz/images/projects/luz.jpeg"
-                                    alt="Album Cover"
-                                    className="w-full aspect-square object-cover transition-transform duration-500 group-hover:scale-105"
-                                />
-                            </div>
-                            {/* Song */}
-                            <div className="mt-1.5 flex justify-center">
-                                <h3 className="flex font-semibold text-white">
-                                    <IoMdPlay className="mt-1 mr-1" /> Luz Roja -bxkq
-                                </h3>
-                            </div>
-
-                        </div>
-                    </a>
+                    <FeaturedLink addToRefs={addToRefs} />
+                    <QuickLinks addToRefs={addToRefs} />
+                    <MusicCard addToRefs={addToRefs} />
+                    <SupportLink addToRefs={addToRefs} />
                 </div>
-                <a
-                    ref={addToRefs}
-                    href="https://www.paypal.com/paypalme/GadgetVishwa"
-
-                    className="mt-auto mb-5 shadow-lg hover:scale-105 transition"
-                >
-                    <img src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png" alt="Buy Me a Coffee" className="h-[60px] w-[217px]" />
-                </a>
             </div>
         </div>
     );
