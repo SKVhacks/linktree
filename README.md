@@ -1,7 +1,7 @@
 # Linktree
 
 <p align="center">
-  <img src="./public/preview.png" alt="Linktree preview" width="600" />
+  <img src="./public/preview.png" alt="Linktree preview"  />
 </p>
 
 A personal, self-hosted [Linktree](https://linktr.ee)-style bio-link page. Built with **React 19 + Vite**, **Tailwind CSS v4**, and **GSAP**. Every link, icon, and label on the page is data-driven — you customize the whole site by editing a single file, no JSX required.
