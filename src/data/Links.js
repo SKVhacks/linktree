@@ -14,7 +14,7 @@ import { RiTelegram2Fill } from "react-icons/ri";
 import { FiGithub } from "react-icons/fi";
 import { FaSteam } from "react-icons/fa";
 import { SiMedium } from "react-icons/si";
-
+import { FaDiscord } from "react-icons/fa";
 // Profile info at the top of the page
 export const profile = {
     name: "Gadget Vishwa",
@@ -26,6 +26,14 @@ export const profile = {
 // Row of social icons under the name
 // If you don't have a Twitch account, simply set link: "#" and available: false. It won't be displayed on the page.
 export const socialLinks = [
+      {
+    platform: "discord",
+    name: "Discord",
+    link: "https://discord.com/users/gadget_vishwa",
+    available: true,
+    icon: FaDiscord,
+    iconClass: "text-indigo-500",
+  },
   {
     platform: "facebook",
     name: "Facebook",
