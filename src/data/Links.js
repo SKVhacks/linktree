@@ -18,11 +18,7 @@ import { FaDiscord } from "react-icons/fa";
 // Profile info at the top of the page
 export const profile = {
     name: "Gadget Vishwa",
-<<<<<<< HEAD
     image: "https://media.gadgetvishwa.in/images/mine1.png",
-=======
-    image: "https://media.gadgetvishwa.in/images/profile.png",
->>>>>>> 4810f39c867c7e9475f51e97c1448fdd257ca5a3
     color:1, // 0 -1  color theme
     shareUrl: "https://linktree.gadgetvishwa.in",
     titles: ["Python Full Stack Developer", "IOT Engineer", "PCB Designer", "Drone Pilot"],
@@ -145,12 +141,8 @@ export const quickLinks = [
   },
   {
     platform: "Gmail",
-<<<<<<< HEAD
-    link: "mailto:contact@gadgetvishwa.in",
-=======
     link: "mailto:support@gadgetvishwa.in",
->>>>>>> 4810f39c867c7e9475f51e97c1448fdd257ca5a3
-    image: "https://media.gadgetvishwa.in/images/projects/gmail.png",
+     image: "https://media.gadgetvishwa.in/images/projects/gmail.png",
     className: "bg-white",
   },
    {
