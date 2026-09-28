@@ -31,9 +31,9 @@ const Linktree = () => {
     };
 
     const [bgGradient, setBgGradient] = useState([
-        "#1c1d1f",
-        "#3a3d40",
-        "#b2d30",
+        // "#1c1d1f",
+        // "#3a3d40",
+        // "#b2d30",
     ]);
 
     const imgRef = useRef(null);
@@ -106,7 +106,7 @@ const Linktree = () => {
 
     const copyUrl = async () => {
         try {
-            await navigator.clipboard.writeText(window.location.href);
+            await navigator.clipboard.writeText(profile.shareUrl);
             setCopied(true);
 
             setTimeout(() => setCopied(false), 2000);
@@ -158,7 +158,7 @@ const Linktree = () => {
                             src={profile.image}
                             alt={profile.name}
                             crossOrigin="anonymous"
-                            // onLoad={extractColors}
+                            onLoad={extractColors}
                             className="w-full h-full object-cover"
                             style={{
                                 WebkitMaskImage:

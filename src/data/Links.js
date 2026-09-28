@@ -18,9 +18,10 @@ import { SiMedium } from "react-icons/si";
 // Profile info at the top of the page
 export const profile = {
     name: "Gadget Vishwa",
-    image: "https://media.gadgetvishwa.xyz/images/profile.png",
+    image: "https://media.gadgetvishwa.in/images/mine1.png",
     color:1, // 0 -1  color theme
-    titles: ["Software Developer", "IOT Engineer", "PCB Designer", "Drone Pilot"],
+    shareUrl: "https://linktree.gadgetvishwa.in",
+    titles: ["Python Full Stack Developer", "IOT Engineer", "PCB Designer", "Drone Pilot"],
 };
 
 // Row of social icons under the name
@@ -114,11 +115,11 @@ export const socialLinks = [
 // If you don't have a portfolio, simply set link: "#" and available: false. It won't be displayed on the page.
 export const featuredLink = {
     platform: "portfolio",
-    link: "https://gadgetvishwa.xyz",
+    link: "https://gadgetvishwa.in",
     available: true,
     label: "Portfolio",
-    subtitle: "gadgetvishwa.xyz",
-    preview: "https://media.gadgetvishwa.xyz/images/projects/share.png",
+    subtitle: "gadgetvishwa.in",
+    preview: "https://media.gadgetvishwa.in/images/projects/share.png",
 };
 
 // The grid of pill buttons (Github / Gmail / Steam / Medium ...)
@@ -132,8 +133,8 @@ export const quickLinks = [
   },
   {
     platform: "Gmail",
-    link: "mailto:gadgetvishwa.official@gmail.com",
-    image: "https://media.gadgetvishwa.xyz/images/projects/gmail.png",
+    link: "mailto:contact@gadgetvishwa.in",
+    image: "https://media.gadgetvishwa.in/images/projects/gmail.png",
     className: "bg-white",
   },
    {
@@ -162,7 +163,7 @@ export const musicLink = {
     title: "Luz Roja",
     artist: "bxbq",
     duration: 110, // in seconds
-    cover: "https://media.gadgetvishwa.xyz/images/projects/luz.jpeg",
+    cover: "https://media.gadgetvishwa.in/images/projects/luz.jpeg",
 };
 
 // Support / donation button at the bottom
