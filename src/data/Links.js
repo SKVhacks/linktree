@@ -14,11 +14,15 @@ import { RiTelegram2Fill } from "react-icons/ri";
 import { FiGithub } from "react-icons/fi";
 import { FaSteam } from "react-icons/fa";
 import { SiMedium } from "react-icons/si";
-
+import { FaDiscord } from "react-icons/fa";
 // Profile info at the top of the page
 export const profile = {
     name: "Gadget Vishwa",
+<<<<<<< HEAD
     image: "https://media.gadgetvishwa.in/images/mine1.png",
+=======
+    image: "https://media.gadgetvishwa.in/images/profile.png",
+>>>>>>> 4810f39c867c7e9475f51e97c1448fdd257ca5a3
     color:1, // 0 -1  color theme
     shareUrl: "https://linktree.gadgetvishwa.in",
     titles: ["Python Full Stack Developer", "IOT Engineer", "PCB Designer", "Drone Pilot"],
@@ -27,6 +31,14 @@ export const profile = {
 // Row of social icons under the name
 // If you don't have a Twitch account, simply set link: "#" and available: false. It won't be displayed on the page.
 export const socialLinks = [
+      {
+    platform: "discord",
+    name: "Discord",
+    link: "https://discord.com/users/gadget_vishwa",
+    available: true,
+    icon: FaDiscord,
+    iconClass: "text-indigo-500",
+  },
   {
     platform: "facebook",
     name: "Facebook",
@@ -133,7 +145,11 @@ export const quickLinks = [
   },
   {
     platform: "Gmail",
+<<<<<<< HEAD
     link: "mailto:contact@gadgetvishwa.in",
+=======
+    link: "mailto:support@gadgetvishwa.in",
+>>>>>>> 4810f39c867c7e9475f51e97c1448fdd257ca5a3
     image: "https://media.gadgetvishwa.in/images/projects/gmail.png",
     className: "bg-white",
   },
@@ -169,7 +185,7 @@ export const musicLink = {
 // Support / donation button at the bottom
 // If you don't have a support link, simply set link: "#" and available: false. It won't be displayed on the page.
 export const supportLink = {
-    platform: "paypal", // "paypal" | "buymeacoffee" | "kofi"
+    platform: "buymeacoffee", // "paypal" | "buymeacoffee" | "kofi"
     link: "https://www.paypal.com/paypalme/GadgetVishwa",
     available: true,
 };
