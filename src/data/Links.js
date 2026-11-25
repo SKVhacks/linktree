@@ -160,6 +160,24 @@ export const quickLinks = [
  
 ];
 
+export const projects = [
+    {
+        available: true,
+        image: "https://media.gadgetvishwa.in/images/projects/loca-tune.png",
+        link: "https://github.com/SKVhacks/Local-Tune",
+    },
+    {
+        available: true,
+        image: "https://media.gadgetvishwa.in/images/projects/social-preview.png",
+        link: "https://github.com/SKVhacks/Xiaomi-Buds",
+    },
+    {
+        available: true,
+
+        image: "https://media.gadgetvishwa.in/images/projects/yt.png",
+        link: "https://github.com/SKVhacks/revanced-yt-tv",
+    },
+];
 
 // Music card — swap `platform` to "spotify" | "ytmusic" | "appleMusic" | "soundcloud | "tidal" 
 // If you don't have a music link, simply set link: "#" and available: false. It won't be displayed on the page.
