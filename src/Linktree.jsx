@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from "react";
 import gsap from "gsap";
-import { DEFAULT_THEME, extractTheme, getCachedTheme } from "@/lib/colorTheme";
+import { Vibrant } from "node-vibrant/browser";
 
 import { FaArrowUpFromBracket } from "react-icons/fa6";
 import { MdVerified } from "react-icons/md";
@@ -14,6 +14,7 @@ import { profile } from "./data/Links";
 
 import SocialMedia from "./pages/SocialMedia";
 import QuickLinks from "./pages/QuickLinks";
+import MusicCard from "./pages/MusicCard";
 import ProjectCards from "./pages/ProjectCards";
 import FeaturedLink from "./pages/FeaturedLink";
 import SupportLink from "./pages/SupportLink";
@@ -30,42 +31,59 @@ const Linktree = () => {
         }
     };
 
-    // Cached theme (from a previous visit) paints instantly, no color flash.
-    const [theme, setTheme] = useState(
-        () => getCachedTheme(profile.image, profile.color) || DEFAULT_THEME
-    );
+    const [bgGradient, setBgGradient] = useState([
+        // "#1c1d1f",
+        // "#3a3d40",
+        // "#b2d30",
+    ]);
 
     const imgRef = useRef(null);
 
-    const extractColors = () => {
-        const img = imgRef.current;
-        if (!img || !img.complete || !img.naturalWidth) return;
+    const darken = (hex, amount = 0.55) => {
+        const rgb = hex.match(/\w\w/g).map((v) => parseInt(v, 16));
+
+        return `rgb(
+        ${Math.floor(rgb[0] * amount)},
+        ${Math.floor(rgb[1] * amount)},
+        ${Math.floor(rgb[2] * amount)}
+    )`;
+    };
+    const extractColors = async () => {
         try {
-            setTheme(extractTheme(img, profile.color));
+            const palette = await Vibrant.from(profile.image).getPalette();
+
+            console.log(palette);
+
+            const colors = [
+                palette.Vibrant?.hex,
+                palette.DarkVibrant?.hex,
+                palette.Muted?.hex,
+                palette.DarkMuted?.hex,
+                palette.LightMuted?.hex,
+                palette.LightVibrant?.hex,
+            ].filter(Boolean);
+
+            if (!colors.length) return;
+
+            const gradient = colors
+                .slice(0, 4)
+                .map((c) => darken(c));
+
+            while (gradient.length < 4) {
+                gradient.push(gradient[gradient.length - 1]);
+            }
+
+            setBgGradient(gradient);
         } catch (err) {
-            // Usually a CORS-tainted canvas: keep the default/cached theme.
-            console.error("Color extraction failed:", err);
+            console.error(err);
         }
     };
-
-    // Keep the outer page + mobile browser chrome in sync with the theme.
-    useEffect(() => {
-        document.body.style.backgroundColor = theme.deep;
-        let meta = document.querySelector('meta[name="theme-color"]');
-        if (!meta) {
-            meta = document.createElement("meta");
-            meta.name = "theme-color";
-            document.head.appendChild(meta);
-        }
-        meta.content = theme.edge;
-    }, [theme]);
 
     useEffect(() => {
         const timer = setTimeout(() => setShowBadge(true), 1300);
         return () => clearTimeout(timer);
     }, []);
     useEffect(() => {
-        // Image may already be loaded (from cache) before React attaches onLoad.
         extractColors();
     }, []);
     useEffect(() => {
@@ -99,20 +117,18 @@ const Linktree = () => {
     };
 
     return (
-        <div
-            className="theme-root min-h-screen flex justify-center text-white font-sans"
-            style={{
-                "--theme-base": theme.base,
-                "--theme-deep": theme.deep,
-                "--theme-edge": theme.edge,
-                "--theme-accent": theme.accent,
-                "--theme-glow": theme.glow,
-                "--theme-secondary": theme.secondary,
-                "--theme-muted": theme.muted,
-                background: "var(--theme-deep)",
-            }}
-        >
-            <div className="theme-surface relative w-full max-w-lg min-h-screen overflow-hidden flex flex-col items-center isolate">
+        <div className="min-h-screen flex justify-center bg-[#121212] text-white font-sans">
+            <div
+                className="relative w-full max-w-lg min-h-screen overflow-hidden flex flex-col items-center transition-all duration-700"
+                style={{
+                    background: `linear-gradient(
+        210deg,
+       
+         ${bgGradient[profile.color]} 40%,
+          ${bgGradient[profile.color + 1]} 100%
+    )`,
+                }}
+            >
                 {/* Copy Toast */}
                 <div className="absolute top-10 left-1/2 -translate-x-1/2 z-50">
                     <AnimatedList delay={1000}>
@@ -129,13 +145,7 @@ const Linktree = () => {
                 <div className="absolute top-5 right-0 flex justify-between px-5 z-10">
                     <button
                         onClick={copyUrl}
-                        className="w-[42px] h-[42px] rounded-full backdrop-blur-md border border-white/20 flex items-center justify-center hover:brightness-125 transition"
-                        style={{
-                            background:
-                                "color-mix(in oklab, var(--theme-base) 45%, transparent)",
-                            boxShadow:
-                                "0 4px 20px color-mix(in oklab, var(--theme-deep) 60%, transparent), inset 0 1px 0 rgba(255,255,255,0.25)",
-                        }}
+                        className="w-[42px] h-[42px] rounded-full bg-white/20 backdrop-blur-md border border-white/20 flex items-center justify-center hover:bg-white/30 transition"
                     >
                         <FaArrowUpFromBracket />
                     </button>
@@ -178,8 +188,7 @@ const Linktree = () => {
 
                     {/* Titles */}
                     <div
-                        style={{ color: "var(--theme-muted)" }}
-                        className={`text-lg font-normal ${showBadge ? "opacity-100" : "opacity-0"
+                        className={`text-lg font-normal text-gray-300 ${showBadge ? "opacity-100" : "opacity-0"
                             } transition-opacity duration-100`}
                     >
                         <WordRotate
